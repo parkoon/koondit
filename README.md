@@ -13,7 +13,7 @@ $ brew install postgresql
 $ pg_ctl -D /usr/local/var/postgres start && brew services start postgresql // postgres start every time your computer starts up.
 ```
 
-추가로, 사용자 및 데이터베이스 생성은 [블로그](`https://www.codementor.io/@engineerapart/getting-started-with-postgresql-on-mac-osx-are8jcopb`) 참고
+추가로, 사용자 및 데이터베이스 생성은 [블로그](https://www.codementor.io/@engineerapart/getting-started-with-postgresql-on-mac-osx-are8jcopb) 참고
 
 ### 2. postgres 명령어
 
