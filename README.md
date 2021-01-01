@@ -82,4 +82,4 @@ Class objects are instances of classes with own defined constructor, properties 
 Usually you define them via class notation.
 ```
 
-(from https://github.com/typestack/class-transformer)
+ref. https://github.com/typestack/class-transformer
