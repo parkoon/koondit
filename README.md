@@ -92,3 +92,22 @@ ref. https://github.com/typestack/class-transformer
 ### res.locals
 
 ### No user variable (like req) to \_
+
+### Why we have to use slug in posts
+
+-   SEO
+-   URL만 보고 포스트의 내용을 짐작 할 수 있다.
+
+### Migration
+
+마이그레이션이란, 한 운영 환경으로부터 다른 운영환경으로 옮기는 작업을 의미한다. (ex, Window --> Linux)
+데이터베이스에서, **데이터 마이그레이션**은 조금 다른 의미로 사용되고 있다.
+**데이터 마이그레이션**이란, 데이터베이스의 스키마 버전을 관리하기 위한 하나의 방법이다. 개발 시스템에에는 스키마가 변경되었지만, 운영 시스템에는 반영되지 않았을 때 마이그레이션을 수행한다.
+
+### createQueryBuilder
+
+### JoinColumn
+
+`@JoinColumn({ name: 'username', referencedColumnName: 'username' })`
+
+foreign key 가 있는 테이블에 명시해주면 된다.

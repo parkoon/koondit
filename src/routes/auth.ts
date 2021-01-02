@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import cookie from 'cookie'
 
-import { User } from '../entities/User'
+import User from '../entities/User'
 import auth from '../middleware/auth'
 
 const register = async (req: Request, res: Response) => {
@@ -22,6 +22,7 @@ const register = async (req: Request, res: Response) => {
             return res.status(400).json({ errors })
         }
 
+        console.log({ email, username, password })
         const user = new User({ email, username, password })
 
         errors = await validate(user)
@@ -51,9 +52,10 @@ const login = async (req: Request, res: Response) => {
 
         if (!user) return res.status(404).json({ error: 'User not found' })
 
+        console.log('password, user.password', password, user.password)
         const passwordMatch = await bcrypt.compare(password, user.password)
 
-        if (passwordMatch)
+        if (!passwordMatch)
             return res.status(401).json({ password: 'Password is incorrect' })
 
         const token = jwt.sign({ username }, process.env.JWT_SECRET)
