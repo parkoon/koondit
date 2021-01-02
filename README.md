@@ -47,6 +47,7 @@ imp > import moduleName from 'module'
 imd > import { destructuredModule } from 'module'
 dob > const  { propName }  = objectToDestruct
 trycatch > try {} catch(err) {}
+nfn > const name = (params) => { }
 ```
 
 ### 5. 객체에 있는 toJSON 의 정체
@@ -83,3 +84,11 @@ Usually you define them via class notation.
 ```
 
 ref. https://github.com/typestack/class-transformer
+
+## 2일차
+
+---
+
+### res.locals
+
+### No user variable (like req) to \_
