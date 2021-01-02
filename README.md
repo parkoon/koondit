@@ -104,7 +104,30 @@ ref. https://github.com/typestack/class-transformer
 데이터베이스에서, **데이터 마이그레이션**은 조금 다른 의미로 사용되고 있다.
 **데이터 마이그레이션**이란, 데이터베이스의 스키마 버전을 관리하기 위한 하나의 방법이다. 개발 시스템에에는 스키마가 변경되었지만, 운영 시스템에는 반영되지 않았을 때 마이그레이션을 수행한다.
 
+## 3일차
+
+---
+
 ### createQueryBuilder
+
+QueryBuilder is one of the most powerful features of TypeORM - it allows you to build SQL queries using elegant and convenient syntax, execute them and get automatically transformed entities.
+
+_Using repository_
+
+```javascript
+import { getRepository } from 'typeorm'
+
+const user = await getRepository(User)
+    .createQueryBuilder('user')
+    .where('user.id = :id', { id: 1 })
+    .getOne()
+```
+
+**소문자로 변경하기**
+
+```javascript
+.where('lower(sub.name) = :name', { name: name.toLowerCase() })
+```
 
 ### JoinColumn
 
