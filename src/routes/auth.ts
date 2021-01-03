@@ -72,7 +72,10 @@ const login = async (req: Request, res: Response) => {
         )
 
         res.json(user)
-    } catch (err) {}
+    } catch (err) {
+        console.log(err)
+        res.json({ error: 'Something went wrong' })
+    }
 }
 
 const me = async (_: Request, res: Response) => {
