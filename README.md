@@ -134,3 +134,128 @@ const user = await getRepository(User)
 `@JoinColumn({ name: 'username', referencedColumnName: 'username' })`
 
 foreign key 가 있는 테이블에 명시해주면 된다.
+
+## 4일차
+
+### 에러 데이터 가공
+
+```json
+{
+    "errors": [
+        {
+            "target": {
+                "email": "",
+                "username": ""
+            },
+            "value": "",
+            "property": "email",
+            "children": [],
+            "constraints": {
+                "length": "Email is empty",
+                "isEmail": "Must be a valid email address"
+            }
+        },
+        {
+            "target": {
+                "email": "",
+                "username": ""
+            },
+            "value": "",
+            "property": "username",
+            "children": [],
+            "constraints": {
+                "length": "Must be at least 3 characters long"
+            }
+        }
+    ]
+}
+```
+
+위 데이터를 가지고, 아래와 같이 에러 메세지를 만드는법
+
+```JSON
+{
+    "email": "Email is empty",
+    "username": "Must be at least 3 characters long"
+}
+```
+
+```javascript
+const mappedError = {}
+errors.forEach((e) => {
+    const key = e.property
+    const value = Object.entries(e.constraints)[0][1]
+    mappedError[key] = value
+})
+```
+
+위 코드를 리펙토링 하면 (함수로 추출)
+
+```javascript
+const mapErrors = (errors: Object[]) => {
+    let mappedErrors: any = {}
+    errors.forEach((e: any) => {
+        const key = e.property
+        const value = Object.entries(e.constraints)[0][1]
+        mappedErrors[key] = value
+    })
+    return mappedErrors
+}
+```
+
+위 코드를 다시 리펠토링 하면 (지역변수 `mappedErrors` 제거)
+
+```javascript
+const mapErrors = (errors: Object[]) => {
+    return errors.reduce((prev: any, err: any) => {
+        prev[err.property] = Object.entries(err.constraints)[0][1]
+        return prev
+    }, {})
+}
+```
+
+### 에러 데이터 처리
+
+서버에서는 아래와 같은 형식으로 404로 데이터 전달한다.
+프론트에서는 catch 에 걸릴 것이다.
+
+```json
+{
+    "email": "Email is empty",
+    "username": "Must be at least 3 characters long"
+}
+```
+
+프론트에서는 아래와 같이 사용한다.
+
+```javascript
+const [errors, setErrors] = useState<any>({})
+
+try {
+    ...
+} catch (err) {
+    setErrors(err.response.data)
+}
+
+<Input error={errors.email} />
+
+```
+
+### 쿠키 사용하기
+
+프론트 사이드
+
+```javascript
+Axios.default.withCredential = true
+```
+
+서버 사이드
+
+```javascript
+app.use(
+    cors({
+        credential: true,
+        origin: 'http://localhost:3000', // 또는 배열로 전달
+    })
+)
+```
