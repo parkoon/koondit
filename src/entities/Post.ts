@@ -6,12 +6,15 @@ import {
     JoinColumn,
     ManyToOne,
     OneToMany,
+    AfterLoad,
 } from 'typeorm'
 import { makeId, slugify } from '../util/helpers'
 import Comment from './Comment'
 import Entity from './Entity'
 import Sub from './Sub'
 import User from './User'
+import Vote from './Vote'
+import { Exclude, Expose } from 'class-transformer'
 
 @TOEntity('posts')
 export default class Post extends Entity {
@@ -37,6 +40,9 @@ export default class Post extends Entity {
     @Column()
     subName: string
 
+    @Column()
+    username: string
+
     @ManyToOne(() => User, (user) => user.posts)
     @JoinColumn({ name: 'username', referencedColumnName: 'username' })
     user: User
@@ -47,6 +53,30 @@ export default class Post extends Entity {
 
     @OneToMany(() => Comment, (comment) => comment.post)
     comments: Comment[]
+
+    @Exclude()
+    @OneToMany(() => Vote, (vote) => vote.post)
+    votes: Vote[]
+
+    @Expose()
+    get commentCount(): number {
+        return this.comments?.length
+    }
+    @Expose()
+    get voteScore(): number {
+        return this.votes?.reduce((prev, curr) => prev + (curr.value || 0), 0)
+    }
+
+    @Expose()
+    get url() {
+        return `/r/${this.subName}/${this.identifier}/${this.slug}`
+    }
+
+    protected userVote: number
+    setUserVote(user: User) {
+        const index = this.votes?.findIndex((v) => v.username === user.username)
+        this.userVote = index > -1 ? this.votes[index].value : 0
+    }
 
     @BeforeInsert()
     makeIdAndSlug() {

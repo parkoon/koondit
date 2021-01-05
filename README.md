@@ -284,3 +284,18 @@ const authRoute = authRoutes.includes(pathname)
 
 !autRoute && <Navbar>
 ```
+
+### Virtual Field 트릭
+
+`@AfterLoad` 와 `protected` 를 이용해 `Virtual Field` 만들기
+
+```javascript
+class Post extends Entity {
+    protected url: string
+
+    @AfterLoad()
+    @createFields() {
+        this.url = '...'
+    }
+}
+```
