@@ -259,3 +259,28 @@ app.use(
     })
 )
 ```
+
+## 5일차
+
+### Navbar 예외처리
+
+> `/register` 와 `/login` 에서는 보여주지 않기
+
+```javascript
+const { pathname } = useRouter()
+const authRoute = pathname === '/register' || pathname === '/login'
+
+!autRoute && <Navbar>
+```
+
+위 코드 리펙토링 하기
+
+foo === bar || foo === far ... 와 같이 이어지는 경우 타겟을 배열로 변경하고 `includes` 메소드를 활용한다.
+
+```javascript
+const { pathname } = useRouter()
+const authRoutes = ['/register', '/login']
+const authRoute = authRoutes.includes(pathname)
+
+!autRoute && <Navbar>
+```
