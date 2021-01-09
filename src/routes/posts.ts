@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express'
 
 import auth from '../middleware/auth'
+import user from '../middleware/user'
 import Post from '../entities/Post'
 import Sub from '../entities/Sub'
 import Comment from '../entities/Comment'
@@ -34,9 +35,15 @@ const getPosts = async (req: Request, res: Response) => {
     try {
         const posts = await Post.find({
             order: { createdAt: 'DESC' },
+            relations: ['comments', 'sub', 'votes'],
         })
+
+        if (res.locals.user) {
+            posts.forEach((p) => p.setUserVote(res.locals.user))
+        }
         return res.json(posts)
     } catch (err) {
+        console.log(err)
         return res.json({ error: 'Something went wrong' })
     }
 }
@@ -72,9 +79,9 @@ const commentOnPost = async (req: Request, res: Response) => {
 
 const router = Router()
 
-router.get('/', getPosts)
+router.get('/', user, getPosts)
 router.get('/:identifier/:slug', getPost)
-router.post('/', auth, createPost)
-router.post('/:identifier/:slug/comments', auth, commentOnPost)
+router.post('/', user, auth, createPost)
+router.post('/:identifier/:slug/comments', user, auth, commentOnPost)
 
 export default router

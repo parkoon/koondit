@@ -299,3 +299,15 @@ class Post extends Entity {
     }
 }
 ```
+
+## 6일차
+
+### auth 미들웨어 분리하기
+
+**꼭** 로그인을 해야하는 API 가 있고, 로그인 여부에 따라 처리가 달라지는 API 가 있다.
+기존에 있던 `auth middleware` 는 로그인 되어 있지 않으면 `401` 에러를 던지고, 다음 컨트롤러로 이동을 하지 못했다.
+따라서, `auth middleware` 를 사용자 정보를 가져오는 미들웨워와 인증을 체크하는 미들웨어로 분리해야 한다.
+
+### IcoMoon
+
+아이콘을 공짜로 사용할 수 있는 좋은 사이트! [IcoMoon](https://icomoon.io/app/#/select)

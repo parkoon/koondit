@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express'
 import auth from '../middleware/auth'
+import user from '../middleware/user'
 import User from '../entities/User'
 import Post from '../entities/Post'
 import Vote from '../entities/Vote'
@@ -63,6 +64,6 @@ const vote = async (req: Request, res: Response) => {
 }
 
 const router = Router()
-router.post('/vote', auth, vote)
+router.post('/vote', user, auth, vote)
 
 export default router
